@@ -21,3 +21,6 @@ This project demonstrates a real-time distance measurement system built using an
 4. Distance is calculated using the speed of sound formula: 
    $$\text{Distance} = \frac{\text{Duration} \times \text{Speed of Sound}}{2}$$
 5. The calculated values are rendered on the **16x2 LCD screen**.
+ 
+## 📸 Hardware Setup & Result
+![Hardware Setup](circuit_setup.jpg)
