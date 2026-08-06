@@ -21,5 +21,10 @@ This project demonstrates a real-time distance measurement system built using an
    $$\text{Distance} = \frac{\text{Duration} \times \text{Speed of Sound}}{2}$$
 5. The processed measurements ($cm$ and $inch$) are transmitted over the **I2C bus** (`A4/SDA`, `A5/SCL`) and rendered on the 16x2 LCD.
 
-## 📸 Hardware Setup & Result
+## 🔌 Circuit Schematic & Setup
+
+### Wokwi Simulation
+![Wokwi Simulation](wokwi_schematic.png)
+
+### Physical Setup & Result
 ![Hardware Setup](circuit_setup.jpg)
