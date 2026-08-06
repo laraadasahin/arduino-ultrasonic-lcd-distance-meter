@@ -1,35 +1,34 @@
 /*
- * Embedded Systems - Ultrasonic Distance Meter with LCD
+ * Embedded Systems - I2C Ultrasonic Distance Meter with LCD
  * Author: Lara Ada Şahin
- * Description: Distance measurement system using HC-SR04 and 16x2 LCD.
- * Includes distance calculation in both cm and inches.
+ * Description: Real-time distance measurement system using HC-SR04, 
+ * Arduino Uno, and 16x2 I2C LCD Display.
  */
 
-#include <LiquidCrystal.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 
-// LCD Pin konfigürasyonu (RS, E, D4, D5, D6, D7)
-LiquidCrystal lcd(10, 9, 5, 4, 3, 2);
+// I2C LCD Ekran Tanımlaması (Adres: 0x27, 16 sütun, 2 satır)
+// Not: Ekranda yazı çıkmazsa 0x27 yerine 0x3F deneyebilirsin.
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-// Sensör Pinleri
-const int trigPin = 11;
-const int echoPin = 12;
-const int lcdBacklightPin = 6; // LCD Arka Işık (PWM)
+// Sensör Pin Bağlantıları (İkinci Videodaki Gibi)
+const int trigPin = A0;
+const int echoPin = A1;
 
 void setup() {
-  // LCD Arka Işık parlaklığı
-  analogWrite(lcdBacklightPin, 100);
+  // LCD Ekranı Başlatma ve Arka Işığı Açma
+  lcd.init();
+  lcd.backlight();
   
-  // LCD ekranı başlat (16 sütun, 2 satır)
-  lcd.begin(16, 2);
-  
-  // Sensör pin modları
+  // Sensör Pin Modları
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   
-  // Seri haberleşmeyi başlat (Hata ayıklama için)
+  // Seri Haberleşmeyi Başlatma (Serial Monitor için)
   Serial.begin(9600);
   
-  // Başlangıç ekranı (Profesyonel dokunuş)
+  // Karşılama Ekranı (Mühendislik Dokunuşu)
   lcd.setCursor(0, 0);
   lcd.print(" Distance Meter ");
   lcd.setCursor(0, 1);
@@ -43,42 +42,42 @@ void loop() {
   int distanceCm;
   int distanceInch;
 
-  // Ultrasonik dalga gönderimi (Trig pini)
+  // Ultrasonik Sensör Tetikleme (Pulse Gönderimi)
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
 
-  // Yanıt süresini ölç (Echo pini)
+  // Ses Dalgasının Dönüş Süresini Ölçme
   duration = pulseIn(echoPin, HIGH);
 
-  // Mesafe Hesaplamaları (cm ve inç)
+  // Mesafe Hesabı (cm ve inç)
   distanceCm = (duration / 2) / 29.1;
-  distanceInch = distanceCm * 0.393701; // cm'yi inç birimine dönüştürme
+  distanceInch = distanceCm * 0.393701;
 
-  // Serial Monitor Çıktısı
+  // Serial Monitor Çıktısı (Bilgisayardan Kontrol İçin)
   Serial.print("Mesafe: ");
   Serial.print(distanceCm);
   Serial.print(" cm | ");
   Serial.print(distanceInch);
-  Serial.println(" inç");
+  Serial.println(" inch");
 
   // LCD Ekran Güncellemesi
   lcd.clear();
   
-  // Satır 0: Santimetre gösterimi
+  // 1. Satır: Centimeter
   lcd.setCursor(0, 0);
   lcd.print("Dist: ");
   lcd.print(distanceCm);
   lcd.print(" cm");
 
-  // Satır 1: İnç gösterimi
+  // 2. Satır: Inch
   lcd.setCursor(0, 1);
   lcd.print("Dist: ");
   lcd.print(distanceInch);
   lcd.print(" inch");
 
-  // Ekranın çok hızlı yanıp sönmesini önlemek için yenileme süresi
+  // Ekranda Titremeyi Önlemek İçin 300ms Bekleme
   delay(300);
 }
