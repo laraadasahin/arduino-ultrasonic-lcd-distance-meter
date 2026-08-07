@@ -9,10 +9,10 @@
 #include <LiquidCrystal_I2C.h>
 
 // I2C LCD Ekran Tanımlaması (Adres: 0x27, 16 sütun, 2 satır)
-// Not: Ekranda yazı çıkmazsa 0x27 yerine 0x3F deneyebilirsin.
+
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
-// Sensör Pin Bağlantıları (İkinci Videodaki Gibi)
+// Sensör Pin Bağlantıları 
 const int trigPin = A0;
 const int echoPin = A1;
 
@@ -28,7 +28,7 @@ void setup() {
   // Seri Haberleşmeyi Başlatma (Serial Monitor için)
   Serial.begin(9600);
   
-  // Karşılama Ekranı (Mühendislik Dokunuşu)
+  // Karşılama Ekranı 
   lcd.setCursor(0, 0);
   lcd.print(" Distance Meter ");
   lcd.setCursor(0, 1);
